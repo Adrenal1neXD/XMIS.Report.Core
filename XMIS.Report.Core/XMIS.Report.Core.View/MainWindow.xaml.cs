@@ -23,8 +23,6 @@ namespace XMIS.Report.Core.View
         public MainWindow()
         {
             InitializeComponent();
-
-            new XMIS.Report.Core.DAL.DataConfiguration().ReadConfiguration();
         }
     }
 }
