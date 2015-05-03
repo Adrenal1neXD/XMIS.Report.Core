@@ -11,8 +11,8 @@ namespace XMIS.Report.Core.DAL
     public class DataConfiguration
     {
         private string dbConnectionPath= @"WIN-Q2I6UCG0G3J\XMISSQLSERVER";
-        private string srcPath = @"D:\Work\1\res";
-        private string dstPath = @"D:\Work\1\dst";
+        private string srcPath = @"D:\Work\1\res\";
+        private string dstPath = @"D:\Work\1\dst\";
         private Type dbConnectionType = typeof(SqlConnection);
 
         public string DBConnectionPath

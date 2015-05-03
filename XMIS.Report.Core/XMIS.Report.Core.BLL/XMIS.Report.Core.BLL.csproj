@@ -39,6 +39,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActionCenter.cs" />
+    <Compile Include="CommandParser.cs" />
     <Compile Include="ReportControl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -52,6 +52,10 @@
       <Project>{12a58fd3-4205-4986-9353-7a735fec4240}</Project>
       <Name>XMIS.Report.Core.BLL</Name>
     </ProjectReference>
+    <ProjectReference Include="..\XMIS.Report.Core.DAL\XMIS.Report.Core.DAL.csproj">
+      <Project>{e39cccbf-db18-437b-92d2-b4facc0a0d28}</Project>
+      <Name>XMIS.Report.Core.DAL</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

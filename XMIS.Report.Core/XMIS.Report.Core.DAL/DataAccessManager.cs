@@ -65,12 +65,20 @@ namespace XMIS.Report.Core.DAL
             var command = this.connection.CreateCommand();
             command.CommandText = query;
 
-            var reader = command.ExecuteReader();
-            var dataTable = new DataTable();
-            dataTable.Load(reader);
-            reader.Close();
-
-            return dataTable;
+            try
+            {
+                var reader = command.ExecuteReader();
+                if (reader == null)
+                    return null;
+                var dataTable = new DataTable();
+                dataTable.Load(reader);
+                reader.Close();
+                return dataTable;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
         }
     }
 }
