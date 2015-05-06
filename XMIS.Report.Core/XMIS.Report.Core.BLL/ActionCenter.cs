@@ -18,28 +18,35 @@ namespace XMIS.Report.Core.BLL
         None,
         Select,
         Min,
-        Max
+        Max,
+        Get
     }
 
     struct DataTableCommand
     {
-        public string Value { get; set; }
+        public object Value { get; set; }
         public int RowIdx { get; set; }
         public int ColumnIdx { get; set; }
     }
 
     public class ActionCenter
     {
+        private List<DataTableCommand> dtCommads;
+
         public dynamic Handle(DataTable param)
         {
             var comm = this.SelectCommands(param);
             if (comm == null || comm.Count == 0)
-                throw new ArgumentException("Can't parse args"); 
+                throw new ArgumentException("Can't parse args");
+            this.dtCommads = comm;
             var realComms = this.TryParse(comm);
             if (realComms == null || realComms.Count == 0)
                 throw new ArgumentException("Can't parse args");
 
-            return realComms;
+            //var res = new List<DataTableCommand>();
+            //for (int i = 0; i < realComms.Count; i++)
+            //    res.Add(new DataTableCommand { Value = realComms[i], ColumnIdx = comm[i].ColumnIdx, RowIdx = comm[i].RowIdx });//
+            //return res;
         }
 
         private List<DataTableCommand> SelectCommands(DataTable xlsdata)
@@ -61,10 +68,12 @@ namespace XMIS.Report.Core.BLL
         private List<KeyValuePair<ActionName, string[]>> TryParse(List<DataTableCommand> arr)
         {
             //parse data
+            List<DataTableCommand> result = new List<DataTableCommand>();
+            //где-то здесь нужно заполнить дататейбл индексами колонки и столбца....
             List<KeyValuePair<ActionName, string[]>> parseResult = new List<KeyValuePair<ActionName, string[]>>();
             var priorityCollection = new List<string>();
             for (int i = 0; i < arr.Count; i++)
-                CommandParser.GetPriorityQueue(arr[i].Value, priorityCollection);
+                CommandParser.GetPriorityQueue((string)arr[i].Value, priorityCollection);
             foreach (string s in priorityCollection)
                 parseResult.Add(CommandParser.Parse(s));
 

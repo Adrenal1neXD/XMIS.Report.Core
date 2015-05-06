@@ -40,6 +40,26 @@ namespace XMIS.Report.Core.BLL
             return Normalize(new KeyValuePair<string, string[]>(tokens[0], tokens[1].Split(',')));
         }
 
+        public static string[] CheckParams(KeyValuePair<ActionName, string[]> src, string[][]  res)
+        {
+            try
+            {
+                if (src.Key != ActionName.Select)
+                {
+                    var str = src.Value[0];
+                    str = str.Remove(0, 5);
+                    int i = Convert.ToInt32(str);
+                    return res[i];
+                }
+                else
+                    return src.Value;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
         private static KeyValuePair<ActionName, string[]> Normalize(KeyValuePair<string, string[]> src)
         {
             //result have an action name or params?

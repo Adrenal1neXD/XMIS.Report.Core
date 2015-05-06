@@ -58,14 +58,18 @@ namespace XMIS.Report.Core.BLL
             //send datatable to ActionCenter and get actionList & params for it
             var ac = new ActionCenter();
             var actionCollection = ac.Handle(xlsdata);
-            object result = null;
-            foreach (KeyValuePair<ActionName, string[]> action in actionCollection)
+            string[][] results = new string[actionCollection.Count][];
+            for (int i = 0; i < actionCollection.Count; i++)
             {
-                //Key - name, Value - params
-                result = this.StartAction(action.Key, action.Value);
+                var args = CommandParser.CheckParams(actionCollection[i].Value, results);
+                var result = this.StartAction(actionCollection[i].Value.Key, args);
+
                 if (result != null)
-                    //////////////////////////////////////////
-                    Console.WriteLine(result);
+                {
+                    if (actionCollection[i].Value.Key == ActionName.Get)
+                        Console.WriteLine(result.ToString());//its out result
+                    results[i] = result;
+                }
             }
         }
 
@@ -87,12 +91,27 @@ namespace XMIS.Report.Core.BLL
                                   select obj.ToString()).ToList();
                     return result.ToArray();
 
-                case ActionName.Max:
-                    return null;
+                case ActionName.Array:
+                    return args;
 
                 case ActionName.Sum:
-                    return null;
+                    int res = 0;
+                    if (args == null)
+                        return null;
+                    for (int i = 0; i < args.Length; i++)
+                    {
+                        try
+                        { 
+                            res += Convert.ToInt32(args[i]);
+                        }
+                        catch (InvalidCastException ex)
+                        {
+                            continue;
+                        }
+                    }
+                    return res;
 
+                    //for plus just arr1.add(arr2) then args/2
                 default:
                     return null;
             }
