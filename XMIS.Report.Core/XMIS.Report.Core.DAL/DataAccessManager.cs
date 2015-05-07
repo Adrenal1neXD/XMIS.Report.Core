@@ -2,6 +2,8 @@
 using System.Data;
 using System.Data.Common;
 
+using XMIS.Report.Contract;
+
 namespace XMIS.Report.Core.DAL
 {
     public class DataAccessManager<T> : IDataAccessManager where T : DbConnection

@@ -48,8 +48,14 @@
     <Compile Include="DataAccessManager.cs" />
     <Compile Include="DataConfiguration.cs" />
     <Compile Include="ExcelAccessManager.cs" />
-    <Compile Include="IDataAccessManager.cs" />
+    <Compile Include="PatientDescriptorDataManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\XMIS.Report.Contract\XMIS.Report.Contract.csproj">
+      <Project>{f1bcec2a-5d78-435f-93ab-cb0c867e2339}</Project>
+      <Name>XMIS.Report.Contract</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

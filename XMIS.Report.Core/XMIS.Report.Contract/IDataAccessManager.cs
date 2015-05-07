@@ -2,7 +2,7 @@
 using System.Data.Common;
 
 
-namespace XMIS.Report.Core.DAL
+namespace XMIS.Report.Contract
 {
     public interface IDataAccessManager
     {

@@ -3,8 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using XMIS.Report.Core.BLL;
+
+using XMIS.Report.Domain.Default;
+using XMIS.Report.Domain;
+using XMIS.Report.Transform;
 using XMIS.Report.Core.DAL;
+using System.Data.SqlClient;
+using System.Data;
 
 namespace Main
 {
@@ -12,7 +17,6 @@ namespace Main
     {
         static void Main(string[] args)
         {
-            new ReportControl().ReadData();
         }
     }
 }

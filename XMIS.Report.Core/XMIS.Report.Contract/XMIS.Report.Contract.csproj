@@ -4,16 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C2D2C629-F83F-4D13-ACD1-DB1E2FB1B871}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{F1BCEC2A-5D78-435F-93AB-CB0C867E2339}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Main</RootNamespace>
-    <AssemblyName>Main</AssemblyName>
+    <RootNamespace>XMIS.Report.Contract</RootNamespace>
+    <AssemblyName>XMIS.Report.Contract</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,7 +22,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -41,44 +39,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="IDescriptorTransformer.cs" />
+    <Compile Include="IDataAccessManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\XMIS.Report.Contract\XMIS.Report.Contract.csproj">
-      <Project>{f1bcec2a-5d78-435f-93ab-cb0c867e2339}</Project>
-      <Name>XMIS.Report.Contract</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\XMIS.Report.Core.BLL\XMIS.Report.Core.BLL.csproj">
-      <Project>{12a58fd3-4205-4986-9353-7a735fec4240}</Project>
-      <Name>XMIS.Report.Core.BLL</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\XMIS.Report.Core.DAL.Tests\XMIS.Report.Core.DAL.Tests.csproj">
-      <Project>{77ca34a8-3a64-4c7b-a2c9-b7e49423c025}</Project>
-      <Name>XMIS.Report.Core.DAL.Tests</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\XMIS.Report.Core.DAL\XMIS.Report.Core.DAL.csproj">
-      <Project>{e39cccbf-db18-437b-92d2-b4facc0a0d28}</Project>
-      <Name>XMIS.Report.Core.DAL</Name>
-    </ProjectReference>
     <ProjectReference Include="..\XMIS.Report.Domain.Default\XMIS.Report.Domain.Default.csproj">
       <Project>{294c3c40-f4af-41c7-99cc-abe29d5ef91b}</Project>
       <Name>XMIS.Report.Domain.Default</Name>
     </ProjectReference>
-    <ProjectReference Include="..\XMIS.Report.Domain\XMIS.Report.Domain.csproj">
-      <Project>{9711dde0-1adf-43cf-819a-2407ad625dbb}</Project>
-      <Name>XMIS.Report.Domain</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\XMIS.Report.Transform\XMIS.Report.Transform.csproj">
-      <Project>{34e362c4-1c52-47cc-a508-11eaa1c3bca9}</Project>
-      <Name>XMIS.Report.Transform</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
