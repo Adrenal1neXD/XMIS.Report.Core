@@ -4,25 +4,27 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 using XMIS.Report.Contract;
 using XMIS.Report.Domain;
 using XMIS.Report.Domain.Default;
-using XMIS.Report.Transform.Extenstions;
+using XMIS.Report.Transform.Extentions;
 
 namespace XMIS.Report.Transform
 {
-    public class ServiceDescriptorTransformer : IDescriptorTransformer
+    public class ServiceDescriptorTransformer : IServiceDescriptorTransformer
     {
-        /// <summary>
+         /// <summary>
         /// The transformer collection organized pipeline. Each transformer implements the interface.
         /// </summary>
-        private List<IDescriptorTransformer> transformerPipeline = new List<IDescriptorTransformer>();
+        private List<IServiceDescriptorUnitTransformer> transformerPipeline = new List<IServiceDescriptorUnitTransformer>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ServiceDescriptorTransformer"/> class.
         /// </summary>
         public ServiceDescriptorTransformer()
         {
+            this.transformerPipeline.Add(new ServiceStayTransformer());
             this.transformerPipeline.Add(new PatientDescriptorTransformer());
         }
 
@@ -35,7 +37,7 @@ namespace XMIS.Report.Transform
         /// <returns>
         /// The <see cref="ServiceDescriptorBase"/>.
         /// </returns>
-        public dynamic Transform(DataRow dataRow)
+        public ServiceDescriptorBase Transform(DataRow dataRow)
         {
             try
             {
@@ -44,9 +46,9 @@ namespace XMIS.Report.Transform
                 serviceDescriptor.InDate = dataRow["pos_d"].ToString().ToDateTime();
                 serviceDescriptor.OutDate = dataRow["out_d"].ToString().ToDateTime();
 
-                foreach (IDescriptorTransformer serviceDescriptorUnitTransformer in this.transformerPipeline)
+                foreach (IServiceDescriptorUnitTransformer serviceDescriptorUnitTransformer in this.transformerPipeline)
                 {
-                    //serviceDescriptorUnitTransformer.Transform(serviceDescriptor, dataRow);
+                    serviceDescriptorUnitTransformer.Transform(serviceDescriptor, dataRow);
                 }
 
                 return serviceDescriptor;

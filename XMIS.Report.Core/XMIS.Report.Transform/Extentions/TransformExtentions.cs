@@ -4,28 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace XMIS.Report.Transform.Extenstions
+namespace XMIS.Report.Transform.Extentions
 {
-        /// <summary>
-    /// The transform extension.
-    /// </summary>
-    public static class TransformExtension
+    public static class TransformExtentions
     {
-        /// <summary>
-        /// The to date time.
-        /// </summary>
-        /// <param name="date">
-        /// The date.
-        /// </param>
-        /// <param name="minutes">
-        /// The minutes.
-        /// </param>
-        /// <returns>
-        /// The <see cref="DateTime"/>.
-        /// </returns>
-        /// <exception cref="Exception">
-        /// Invalid date time format for : [date] [minutes]
-        /// </exception>
         public static DateTime ToDateTime(this string date, int minutes)
         {
             try
@@ -48,22 +30,10 @@ namespace XMIS.Report.Transform.Extenstions
             return date.ToDateTime(0);
         }
 
-        /// <summary>
-        /// The get time minutes from legacy fox format of numbers separated by comma[12.00].
-        /// </summary>
-        /// <param name="time">
-        /// The time.
-        /// </param>
-        /// <returns>
-        /// A number of minutes <see cref="int"/>.
-        /// </returns>
-        /// <exception cref="Exception">
-        /// Invalid time string : [time]. 
-        /// </exception>
         public static int ToMinutes(this string time)
         {
             try
-            {                
+            {
                 int result = 0;
                 if (time.Trim() == "." || time.Trim() == String.Empty)
                 {
@@ -71,7 +41,7 @@ namespace XMIS.Report.Transform.Extenstions
                 }
 
                 string[] timePair = time.Split('.');
-                
+
                 result = timePair[0].ToNumber() * 60 + timePair[1].ToNumber();
                 return result;
             }
@@ -82,15 +52,6 @@ namespace XMIS.Report.Transform.Extenstions
             }
         }
 
-        /// <summary>
-        /// The to number.
-        /// </summary>
-        /// <param name="s">
-        /// The s.
-        /// </param>
-        /// <returns>
-        /// The number <see cref="int"/>.
-        /// </returns>
         public static int ToNumber(this string s)
         {
             int result = 0;

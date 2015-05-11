@@ -5,13 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using XMIS.Report.Domain;
+
 namespace XMIS.Report.Contract
 {
-    public interface IDataAccessManager
+    public interface IServiceDescriptorUnitTransformer
     {
-        void Connect(string directory);
-        bool Connected { get; }
-        DataTable DoQuery(string query);
-        void Disconnect();
+        ServiceDescriptorBase Transform(ServiceDescriptorBase serviveDescriprtor, DataRow dataRow);
     }
 }

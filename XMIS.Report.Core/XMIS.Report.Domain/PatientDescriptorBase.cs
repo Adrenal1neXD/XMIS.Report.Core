@@ -31,7 +31,7 @@ namespace XMIS.Report.Domain
         public virtual DateTime Dob
         {
             get { return dob; }
-            set { dob = value;}
+            set { dob = value; }
         }
 
         public int Gender

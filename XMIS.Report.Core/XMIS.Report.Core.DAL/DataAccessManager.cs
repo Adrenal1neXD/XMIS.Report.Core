@@ -6,7 +6,7 @@ using XMIS.Report.Contract;
 
 namespace XMIS.Report.Core.DAL
 {
-    public class DataAccessManager<T> : IDataAccessManager where T : DbConnection
+    public class DataAccessManager<T> : IDataAccessManager where T : IDbConnection
     {
         private string connectionStringPattern = @"password='';user id='';Data Source='{0}';Integrated Security=True";
         private T connection;
@@ -46,7 +46,6 @@ namespace XMIS.Report.Core.DAL
         {
             if (this.Connected)
                 this.connection.Close();
-                this.connection = null;
         }
 
         public bool Connected

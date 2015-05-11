@@ -18,7 +18,7 @@ namespace XMIS.Report.Domain.Default
             }
             set
             {
-                base.Dob = value; 
+                base.Dob = value;
                 DateTime today = DateTime.Today;
                 int age = today.Year - Dob.Year;
                 if (Dob > today.AddYears(-age)) age--;
@@ -26,8 +26,8 @@ namespace XMIS.Report.Domain.Default
 
                 var goupMod = this.Age / 10f;
                 this.AgeGroup = (int)Math.Ceiling(goupMod) - 1;
-                this.AgeSubGroup = ((goupMod - (int)goupMod) <= .5) 
-                    ? (int)goupMod + 1 
+                this.AgeSubGroup = ((goupMod - (int)goupMod) <= .5)
+                    ? (int)goupMod + 1
                     : (int)goupMod + 2;
             }
         }

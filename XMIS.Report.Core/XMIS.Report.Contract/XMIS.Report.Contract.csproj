@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F1BCEC2A-5D78-435F-93AB-CB0C867E2339}</ProjectGuid>
+    <ProjectGuid>{7F65DE2A-769A-4436-94E7-273A95DE64A5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>XMIS.Report.Contract</RootNamespace>
@@ -39,14 +39,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IDescriptorTransformer.cs" />
     <Compile Include="IDataAccessManager.cs" />
+    <Compile Include="IServiceDescriptorTransformer.cs" />
+    <Compile Include="IServiceDescriptorUnitTransformer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\XMIS.Report.Domain.Default\XMIS.Report.Domain.Default.csproj">
-      <Project>{294c3c40-f4af-41c7-99cc-abe29d5ef91b}</Project>
-      <Name>XMIS.Report.Domain.Default</Name>
+    <ProjectReference Include="..\XMIS.Report.Domain\XMIS.Report.Domain.csproj">
+      <Project>{0c7d743a-c539-41f1-8827-442f9aa10a42}</Project>
+      <Name>XMIS.Report.Domain</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -29,7 +29,7 @@ namespace XMIS.Report.Domain
         /// <summary>
         /// The stay.
         /// </summary>
-        //private ServiceStayBase stay;
+        private ServiceStayBase stay;
         //private ServiceExpensesBase expenses;
         //private DiagnosisDescriptorBase diagnosis;
 
@@ -63,11 +63,11 @@ namespace XMIS.Report.Domain
         //    set { operation = value; }
         //}
 
-        //public ServiceStayBase Stay
-        //{
-        //    get { return stay; }
-        //    set { stay = value; }
-        //}
+        public ServiceStayBase Stay
+        {
+            get { return stay; }
+            set { stay = value; }
+        }
 
         //public ServiceExpensesBase Expenses
         //{

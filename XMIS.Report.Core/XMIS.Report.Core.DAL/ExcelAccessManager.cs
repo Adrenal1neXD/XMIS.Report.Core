@@ -24,10 +24,10 @@ namespace XMIS.Report.Core.DAL
             this.releaseAllObjects();
         }
 
-        public void OpenXmlFile(string fullFilePath)
+        public void OpenXlsFile(string fullFilePath)
         {
             string path = fullFilePath;
-            if (!this.checkToXmlEnding(fullFilePath))
+            if (!this.checkToXlsEnding(fullFilePath))
                 path += ".xls";
             this.xlApp = new Application();
             try
@@ -48,7 +48,7 @@ namespace XMIS.Report.Core.DAL
             }
         }
 
-        public System.Data.DataTable ReadFormXmlFile()
+        public System.Data.DataTable ReadFormXlsFile()
         {
             if (this.xlWorkSheet == null)
                 throw new Exception("File is not opened");
@@ -92,13 +92,13 @@ namespace XMIS.Report.Core.DAL
             return dataTable;
         }
 
-        public void WriteToXmlFile(int rCnt, int cCnt, string data)
+        public void WriteToXlsFile(int rCnt, int cCnt, string data)
         {
             var range = this.xlWorkSheet.UsedRange;
             (range.Cells[rCnt, cCnt] as Range).Value2 = data;
         }
 
-        public void WriteRowToXmlFile(int rCnt, string[] data)
+        public void WriteRowToXlsFile(int rCnt, string[] data)
         {
             if (this.xlWorkSheet == null)
                 throw new Exception("File is not opened");
@@ -108,7 +108,7 @@ namespace XMIS.Report.Core.DAL
                 (range.Cells[rCnt, cCnt] as Range).Value2 = data[cCnt - 1];
         }
 
-        public void SaveXmlFileAs(string fullFilePath)
+        public void SaveXlsFileAs(string fullFilePath)
         {
             if (this.xlWorkBook != null)
                 this.xlWorkBook.SaveAs(fullFilePath + ".xls");
@@ -148,7 +148,7 @@ namespace XMIS.Report.Core.DAL
             }
         }
 
-        private bool checkToXmlEnding(string src)
+        private bool checkToXlsEnding(string src)
         {
             return src.IndexOf(".xls") > 0;
         }
