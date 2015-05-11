@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{7F65DE2A-769A-4436-94E7-273A95DE64A5}</ProjectGuid>
+    <ProjectGuid>{50196231-2ABB-4064-B200-12FEB3AA1277}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>XMIS.Report.Contract</RootNamespace>
-    <AssemblyName>XMIS.Report.Contract</AssemblyName>
+    <RootNamespace>XMIS.Report.Core.Processor</RootNamespace>
+    <AssemblyName>XMIS.Report.Core.Processor</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -39,16 +39,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IConditionController.cs" />
-    <Compile Include="IConditionHelper.cs" />
-    <Compile Include="IConditionProvider.cs" />
-    <Compile Include="IDataAccessManager.cs" />
-    <Compile Include="IQueryProcessor.cs" />
-    <Compile Include="IServiceDescriptorTransformer.cs" />
-    <Compile Include="IServiceDescriptorUnitTransformer.cs" />
+    <Compile Include="Condition\ConditionController.cs" />
+    <Compile Include="Condition\PeriodConditionProvider.cs" />
+    <Compile Include="Extentions\LinqHelper.cs" />
+    <Compile Include="QueryProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\XMIS.Report.Contract\XMIS.Report.Contract.csproj">
+      <Project>{7f65de2a-769a-4436-94e7-273a95de64a5}</Project>
+      <Name>XMIS.Report.Contract</Name>
+    </ProjectReference>
     <ProjectReference Include="..\XMIS.Report.Domain\XMIS.Report.Domain.csproj">
       <Project>{0c7d743a-c539-41f1-8827-442f9aa10a42}</Project>
       <Name>XMIS.Report.Domain</Name>
