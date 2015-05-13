@@ -32,6 +32,9 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Linq.Dynamic">
+      <HintPath>..\packages\System.Linq.Dynamic.1.0.4\lib\net40\System.Linq.Dynamic.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -39,8 +42,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Condition\AgeConditionProvider.cs" />
     <Compile Include="Condition\ConditionController.cs" />
+    <Compile Include="Condition\PatientConditionHelper.cs" />
     <Compile Include="Condition\PeriodConditionProvider.cs" />
+    <Compile Include="Condition\RegionConditionProvider.cs" />
     <Compile Include="Extentions\LinqHelper.cs" />
     <Compile Include="QueryProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -54,6 +60,9 @@
       <Project>{0c7d743a-c539-41f1-8827-442f9aa10a42}</Project>
       <Name>XMIS.Report.Domain</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

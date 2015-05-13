@@ -10,9 +10,9 @@ namespace XMIS.Report.Core.DAL
 {
     public class DataConfiguration
     {
-        private string dbConnectionPath= @"WIN-Q2I6UCG0G3J\XMISSQLSERVER";
-        private string srcPath = @"D:\Work\1\res\";
-        private string dstPath = @"D:\Work\1\dst\";
+        private string dbConnectionPath= @"WIN-Q2I6UCG0G3J\SQLSERVER";
+        private string srcPath = @"D:\Work\1\res";
+        private string dstPath = @"D:\Work\1\dst";
         private Type dbConnectionType = typeof(SqlConnection);
 
         public string DBConnectionPath
@@ -64,9 +64,10 @@ namespace XMIS.Report.Core.DAL
         {
             try
             {
-                this.DBConnectionPath = ConfigurationManager.AppSettings["DbConnectionPath"].Trim();
-                this.SrcPath = ConfigurationManager.AppSettings["SrcFilesPath"].Trim();
-                this.DstPath = ConfigurationManager.AppSettings["DstFilesPath"].Trim();
+                this.DBConnectionPath = this.RemoveLastSlash(ConfigurationManager.AppSettings["DbConnectionPath"].Trim());
+                this.SrcPath = this.RemoveLastSlash(ConfigurationManager.AppSettings["SrcFilesPath"].Trim());
+                this.DstPath = this.RemoveLastSlash(ConfigurationManager.AppSettings["DstFilesPath"].Trim());
+
 
                 if ((this.DbConnectionType = Type.GetType(ConfigurationManager.AppSettings["DbConnectionType"].Trim())) == null)
                     this.DbConnectionType = typeof(SqlConnection);
@@ -75,6 +76,14 @@ namespace XMIS.Report.Core.DAL
             {
                 throw new Exception("Can't find configuration. Check your app.config file.", ex);
             }
+        }
+
+        private string RemoveLastSlash(string path)
+        {
+            if (path[path.Length - 1] == '\\')
+                return path.Remove(path.Length - 1, 1);
+            else
+                return path;
         }
     }
 }

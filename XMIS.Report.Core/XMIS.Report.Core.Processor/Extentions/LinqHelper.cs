@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Linq.Dynamic;
 
 using XMIS.Report.Domain;
 
@@ -42,9 +43,9 @@ namespace XMIS.Report.Core.Processor.Extentions
 
         public static IEnumerable<IGrouping<object, TElement>> GroupByMany<TElement>(
         this IEnumerable<TElement> elements, params string[] groupSelectors)
-        {//
+        {
             var selectors = new List<Func<TElement, object>>(groupSelectors.Length);
-            //selectors.AddRange(groupSelectors.Select(selector => DynamicExpression.ParseLambda(typeof(TElement), typeof(object), selector)).Select(l => (Func<TElement, object>)l.Compile()));
+            selectors.AddRange(groupSelectors.Select(selector => DynamicExpression.ParseLambda(typeof(TElement), typeof(object), selector)).Select(l => (Func<TElement, object>)l.Compile()));
             return elements.GroupByMany(selectors.ToArray());
         }
 

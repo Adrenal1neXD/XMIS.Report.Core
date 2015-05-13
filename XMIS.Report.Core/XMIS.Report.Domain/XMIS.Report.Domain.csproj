@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CellBase.cs" />
     <Compile Include="PatientDescriptorBase.cs" />
     <Compile Include="ServiceDescriptorBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

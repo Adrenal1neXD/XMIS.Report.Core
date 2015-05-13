@@ -6,6 +6,13 @@ using System.Threading.Tasks;
 
 namespace XMIS.Report.Domain
 {
+    public enum PatientState
+    {
+        Normal,
+        Comma,
+        Dead
+    }
+
     public class PatientDescriptorBase
     {
         private int age;
@@ -13,6 +20,7 @@ namespace XMIS.Report.Domain
         private int ageGroup;
         private int ageSubGroup;
         private int gender;
+        private PatientState state;
 
         private int regionId;
 
@@ -55,6 +63,24 @@ namespace XMIS.Report.Domain
             set
             {
                 this.regionId = value;
+            }
+        }
+
+        //
+
+        public bool IsAlive
+        {
+            get
+            {
+                return this.state != PatientState.Dead;
+            }
+        }
+
+        public bool IsVillager
+        {
+            get 
+            {
+                return false;
             }
         }
     }

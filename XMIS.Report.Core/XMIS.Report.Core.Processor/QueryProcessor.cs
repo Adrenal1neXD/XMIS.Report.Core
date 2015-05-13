@@ -43,6 +43,11 @@ namespace XMIS.Report.Core.Processor
             return resultDictionary;
         }
 
+        public int DoCountQuery(Func<ServiceDescriptorBase, bool> func)
+        {
+            return this.serviceCollection.Where(s => func(s) == true).Count();
+        }
+
         public double GetCount(Func<ServiceDescriptorBase, bool> func)
         {
             int queryResult = this.serviceCollection.Where(func).ToList().Count;

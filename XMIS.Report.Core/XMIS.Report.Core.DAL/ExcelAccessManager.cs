@@ -14,6 +14,7 @@ namespace XMIS.Report.Core.DAL
         private Application xlApp;
         private Workbook xlWorkBook;
         private Worksheet xlWorkSheet;
+        private int offset = 0;//arr[i,j] i-с какого индеска отступать j-на сколько
 
         ~ExcelAccessManager()
         {
@@ -26,6 +27,8 @@ namespace XMIS.Report.Core.DAL
 
         public void OpenXlsFile(string fullFilePath)
         {
+            if (this.xlApp != null)
+                this.releaseAllObjects();
             string path = fullFilePath;
             if (!this.checkToXlsEnding(fullFilePath))
                 path += ".xls";
@@ -71,6 +74,9 @@ namespace XMIS.Report.Core.DAL
 
                 if (trigger)
                     items.Add(arr);
+
+                if (items.Count == 1)
+                    this.offset = rCnt;
             }
 
             return this.ToDataTable(items);
@@ -94,8 +100,7 @@ namespace XMIS.Report.Core.DAL
 
         public void WriteToXlsFile(int rCnt, int cCnt, string data)
         {
-            var range = this.xlWorkSheet.UsedRange;
-            (range.Cells[rCnt, cCnt] as Range).Value2 = data;
+            this.xlWorkSheet.UsedRange.Cells[rCnt + this.offset + 1, cCnt + 1].Value2 = data;
         }
 
         public void WriteRowToXlsFile(int rCnt, string[] data)
@@ -111,7 +116,10 @@ namespace XMIS.Report.Core.DAL
         public void SaveXlsFileAs(string fullFilePath)
         {
             if (this.xlWorkBook != null)
-                this.xlWorkBook.SaveAs(fullFilePath + ".xls");
+                if (checkToXlsEnding(fullFilePath))
+                    this.xlWorkBook.SaveAs(fullFilePath);
+                else
+                    this.xlWorkBook.SaveAs(fullFilePath + ".xls");
         }
 
         private void releaseObject(object obj)

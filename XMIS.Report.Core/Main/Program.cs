@@ -8,8 +8,12 @@ using XMIS.Report.Domain.Default;
 using XMIS.Report.Domain;
 using XMIS.Report.Transform;
 using XMIS.Report.Core.DAL;
+using XMIS.Report.Core.Processor;
+using XMIS.Report.Core.Processor.Condition;
+using XMIS.Report.Core.BLL;
 using System.Data.SqlClient;
 using System.Data;
+using XMIS.Report.Core.BLL.Extentions;
 
 namespace Main
 {
@@ -17,16 +21,8 @@ namespace Main
     {
         static void Main(string[] args)
         {
-            var conn = new DataAccessManager<SqlConnection>();
-            conn.Connect(@"WIN-Q2I6UCG0G3J\SQLSERVER");
-
-            var data = conn.DoQuery("Select * from [XMISDB].[dbo].[Person]");
-
-            var service = new ServiceDescriptorTransformer();
-            List<ServiceDescriptorBase> sd = new List<ServiceDescriptorBase>();
-
-            foreach(DataRow row in data.AsEnumerable())
-                sd.Add(service.Transform(row));
+            var rc = new ReportController();
+            rc.WriteDataToXlsFile("form7x.xls");
         }
     }
 }

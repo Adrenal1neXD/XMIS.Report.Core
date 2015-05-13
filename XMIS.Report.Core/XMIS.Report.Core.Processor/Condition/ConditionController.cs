@@ -10,7 +10,7 @@ using XMIS.Report.Core.Processor.Extentions;
 
 namespace XMIS.Report.Core.Processor.Condition
 {
-    class ConditionController
+    public class ConditionController : IConditionController
     {
         private readonly Dictionary<string, Func<ServiceDescriptorBase, bool>> conditionDictionary = new Dictionary<string, Func<ServiceDescriptorBase, bool>>();
 
@@ -29,12 +29,13 @@ namespace XMIS.Report.Core.Processor.Condition
             //this.conditionProviderCollection.Add("icd_pattern", new IcdConditionProvider());
             //this.conditionProviderCollection.Add("operations", new OperationConditionProvider());
             //this.conditionProviderCollection.Add("surgeons", new SurgeonConditionProvider());
-            //this.conditionProviderCollection.Add("regions", new RegionConditionProvider());
+            this.conditionProviderCollection.Add("regions", new RegionConditionProvider());
             //this.conditionProviderCollection.Add("operationDirection", new OperationDirectionConditionProvider());
             //this.conditionProviderCollection.Add("operationClass", new OperationGroupConditionProvider());
+            this.conditionProviderCollection.Add("ages", new AgeConditionProvider());
 
             //// helpers used for simple conditions processing
-            //this.conditionHelperCollection.Add(new PatientConditionHelper());
+            this.conditionHelperCollection.Add(new PatientConditionHelper());
             //this.conditionHelperCollection.Add(new StayDivergenceConditionHelper());
             //this.conditionHelperCollection.Add(new OperationConditionHelper());
             //this.conditionHelperCollection.Add(new OperationLengthDivergenceConditionHelper());
@@ -128,6 +129,8 @@ namespace XMIS.Report.Core.Processor.Condition
 
             this.groupConditionDictionary.Add("dow_in", c => (int)c.InDate.DayOfWeek + 1);
             this.groupConditionDictionary.Add("dow_out", c => (int)c.OutDate.DayOfWeek + 1);
+
+            this.groupConditionDictionary.Add("id", c => c.Id);
         }
 
         private void InitConditionCollection()

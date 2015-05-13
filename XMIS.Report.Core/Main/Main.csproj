@@ -64,6 +64,10 @@
       <Project>{e39cccbf-db18-437b-92d2-b4facc0a0d28}</Project>
       <Name>XMIS.Report.Core.DAL</Name>
     </ProjectReference>
+    <ProjectReference Include="..\XMIS.Report.Core.Processor\XMIS.Report.Core.Processor.csproj">
+      <Project>{50196231-2abb-4064-b200-12feb3aa1277}</Project>
+      <Name>XMIS.Report.Core.Processor</Name>
+    </ProjectReference>
     <ProjectReference Include="..\XMIS.Report.Domain.Default\XMIS.Report.Domain.Default.csproj">
       <Project>{c15ec840-69ff-4b17-9817-574e7aa830f5}</Project>
       <Name>XMIS.Report.Domain.Default</Name>
