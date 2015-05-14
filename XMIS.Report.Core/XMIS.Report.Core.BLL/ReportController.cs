@@ -50,7 +50,7 @@ namespace XMIS.Report.Core.BLL
             for (int i = 0; i < commCells.Count; i++)
             {
                 var val = this.HandleValue(commCells[i].Value);
-                if (val.GetType() == typeof(Dictionary<object,double>))
+                if (val.GetType() == typeof(Dictionary<object, double>))
                 {
                     //grouped
                 }

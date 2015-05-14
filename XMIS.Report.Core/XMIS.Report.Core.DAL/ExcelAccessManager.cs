@@ -14,7 +14,7 @@ namespace XMIS.Report.Core.DAL
         private Application xlApp;
         private Workbook xlWorkBook;
         private Worksheet xlWorkSheet;
-        private int offset = 0;//arr[i,j] i-с какого индеска отступать j-на сколько
+        private Dictionary<int, int> yOffset = new Dictionary<int, int>();
 
         ~ExcelAccessManager()
         {
@@ -53,15 +53,19 @@ namespace XMIS.Report.Core.DAL
 
         public System.Data.DataTable ReadFormXlsFile()
         {
+            this.yOffset.Clear();
             if (this.xlWorkSheet == null)
                 throw new Exception("File is not opened");
 
             var range = this.xlWorkSheet.UsedRange;
             List<string[]> items = new List<string[]>();
+            bool trigger = false;
+            int offStart = 1;
+            int offEnd = 0;
             for (int rCnt = 1; rCnt <= range.Rows.Count; rCnt++)
             {
                 string[] arr = new string[range.Columns.Count];
-                bool trigger = false;
+                trigger = false;
                 for (int cCnt = 1; cCnt <= range.Columns.Count; cCnt++)
                 {
                     string str = Convert.ToString((range.Cells[rCnt, cCnt] as Range).Value2);
@@ -72,12 +76,24 @@ namespace XMIS.Report.Core.DAL
                     }
                 }
 
-                if (trigger)
-                    items.Add(arr);
 
-                if (items.Count == 1)
-                    this.offset = rCnt;
+                if (trigger)
+                {
+                    if (offEnd == rCnt - 1 && rCnt - 1 != 0)
+                    { 
+                        this.yOffset.Add(offStart, offEnd);
+                        offEnd = 0;
+                    }
+                    items.Add(arr);
+                    offStart = rCnt;
+                }
+                else
+                    offEnd = rCnt;
+                    
             }
+            
+            if (offEnd != 0)
+                this.yOffset.Add(offStart, offEnd);
 
             return this.ToDataTable(items);
         }
@@ -100,7 +116,14 @@ namespace XMIS.Report.Core.DAL
 
         public void WriteToXlsFile(int rCnt, int cCnt, string data)
         {
-            this.xlWorkSheet.UsedRange.Cells[rCnt + this.offset + 1, cCnt + 1].Value2 = data;
+            var offs = from y in this.yOffset
+                    where y.Key < rCnt
+                    select y.Value - y.Key;
+            var off = 0;
+            foreach (int i in offs)
+                off += i;
+
+            this.xlWorkSheet.UsedRange.Cells[rCnt + off + 1, cCnt + 1].Value2 = data;
         }
 
         public void WriteRowToXlsFile(int rCnt, string[] data)
@@ -110,7 +133,7 @@ namespace XMIS.Report.Core.DAL
 
             var range = this.xlWorkSheet.UsedRange;
             for (int cCnt = 1; (rCnt <= range.Rows.Count) || (cCnt < data.Length + 1); rCnt++)
-                (range.Cells[rCnt, cCnt] as Range).Value2 = data[cCnt - 1];
+                this.xlWorkSheet.UsedRange.Value2 = data[cCnt - 1];
         }
 
         public void SaveXlsFileAs(string fullFilePath)

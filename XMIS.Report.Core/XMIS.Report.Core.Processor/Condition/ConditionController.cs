@@ -130,7 +130,7 @@ namespace XMIS.Report.Core.Processor.Condition
             this.groupConditionDictionary.Add("dow_in", c => (int)c.InDate.DayOfWeek + 1);
             this.groupConditionDictionary.Add("dow_out", c => (int)c.OutDate.DayOfWeek + 1);
 
-            this.groupConditionDictionary.Add("id", c => c.Id);
+            this.groupConditionDictionary.Add("serv_id", c => c.Id);
         }
 
         private void InitConditionCollection()
