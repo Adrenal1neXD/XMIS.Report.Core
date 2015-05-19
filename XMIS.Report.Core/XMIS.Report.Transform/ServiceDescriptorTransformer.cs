@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using XMIS.Report.Contract;
+using XMIS.Report.Transform.Contract;
 using XMIS.Report.Domain;
 using XMIS.Report.Domain.Default;
 using XMIS.Report.Transform.Extentions;

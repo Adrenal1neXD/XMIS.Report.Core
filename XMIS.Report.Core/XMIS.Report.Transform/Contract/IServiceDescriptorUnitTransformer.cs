@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 using XMIS.Report.Domain;
 
-namespace XMIS.Report.Contract
+namespace XMIS.Report.Transform.Contract
 {
     public interface IServiceDescriptorUnitTransformer
     {

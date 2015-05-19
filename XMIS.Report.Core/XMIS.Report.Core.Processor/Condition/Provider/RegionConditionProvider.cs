@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using XMIS.Report.Contract;
 using XMIS.Report.Domain;
+using XMIS.Report.Core.Processor.Contract;
 using XMIS.Report.Core.Processor.Extentions;
 
-namespace XMIS.Report.Core.Processor.Condition
+namespace XMIS.Report.Core.Processor.Condition.Provider
 {
-    public class AgeConditionProvider : IConditionProvider
+    public class RegionConditionProvider : IConditionProvider
     {
         public Func<ServiceDescriptorBase, bool> GetFunction(string condition)
         {
@@ -28,21 +28,11 @@ namespace XMIS.Report.Core.Processor.Condition
                     {
                         // ! means "not"  
                         string _operation = operation.Replace("!", string.Empty);
-                        __func = c => c.Patient.Age != Convert.ToInt32(_operation);
-                    }
-                    else if (operation.StartsWith("<"))
-                    {
-                        string _operation = operation.Replace("<", string.Empty);
-                        __func = c => c.Patient.Age < Convert.ToInt32(_operation);
-                    }
-                    else if (operation.StartsWith(">"))
-                    {
-                        string _operation = operation.Replace(">", string.Empty);
-                        __func = c => c.Patient.Age > Convert.ToInt32(_operation);
+                        __func = c => c.Patient.RegionId != Convert.ToInt32(_operation);
                     }
                     else
                     {
-                        __func = c => c.Patient.Age == Convert.ToInt32(operation);
+                        __func = c => c.Patient.RegionId == Convert.ToInt32(operation);
                     }
 
                     if (func == null)
@@ -62,16 +52,6 @@ namespace XMIS.Report.Core.Processor.Condition
                 {
                     string _condition = condition.Replace("!", string.Empty);
                     func = c => c.Patient.RegionId != Convert.ToInt32(_condition);
-                }
-                else if (condition.StartsWith("<"))
-                {
-                    string _operation = condition.Replace("<", string.Empty);
-                    func = c => c.Patient.Age < Convert.ToInt32(_operation);
-                }
-                else if (condition.StartsWith(">"))
-                {
-                    string _operation = condition.Replace(">", string.Empty);
-                    func = c => c.Patient.Age > Convert.ToInt32(_operation);
                 }
                 else
                 {

@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 using XMIS.Report.Domain;
-using XMIS.Report.Contract;
+using XMIS.Report.Core.Processor.Contract;
 
-namespace XMIS.Report.Core.Processor.Condition
+namespace XMIS.Report.Core.Processor.Condition.Helper
 { 
     public class PatientConditionHelper : IConditionHelper
     {

@@ -5,8 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 using XMIS.Report.Domain;
+using XMIS.Report.Core.Processor.Contract;
 
-namespace XMIS.Report.Core.Processor.Condition
+namespace XMIS.Report.Core.Processor.Condition.Provider
 {
     public class PeriodConditionProvider
     {

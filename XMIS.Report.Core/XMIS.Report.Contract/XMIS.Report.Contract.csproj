@@ -39,13 +39,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IConditionController.cs" />
-    <Compile Include="IConditionHelper.cs" />
-    <Compile Include="IConditionProvider.cs" />
-    <Compile Include="IDataAccessManager.cs" />
-    <Compile Include="IQueryProcessor.cs" />
-    <Compile Include="IServiceDescriptorTransformer.cs" />
-    <Compile Include="IServiceDescriptorUnitTransformer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

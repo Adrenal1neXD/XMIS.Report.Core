@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 using XMIS.Report.Domain;
 
-namespace XMIS.Report.Contract
+namespace XMIS.Report.Core.Processor.Contract
 {
     public interface IConditionHelper
     {

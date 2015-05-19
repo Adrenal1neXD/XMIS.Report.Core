@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Data;
 
 using XMIS.Report.Domain;
-using XMIS.Report.Contract;
+using XMIS.Report.Transform.Contract;
 using XMIS.Report.Domain.Default;
 using XMIS.Report.Transform.Extentions;
 

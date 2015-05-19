@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 using XMIS.Report.Domain;
 
-namespace XMIS.Report.Contract
+namespace XMIS.Report.Core.Processor.Contract
 {
     public interface IConditionController
     {
         Func<ServiceDescriptorBase, bool> GetConditionFunction(
             string condition, string patientType, DateTime startDate, DateTime endDate);
 
-        Func<ServiceDescriptorBase, object> GetGroupFunction(string groupType);
+        //Func<ServiceDescriptorBase, object> GetGroupFunction(string groupType);
     }
 }

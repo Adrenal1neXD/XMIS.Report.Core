@@ -5,34 +5,55 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
+
+using Microsoft.Practices.Unity;
 
 using XMIS.Report.Core.DAL;
 using XMIS.Report.Transform;
-using XMIS.Report.Contract;
+using XMIS.Report.Core.Processor.Contract;
 using XMIS.Report.Domain;
 using XMIS.Report.Domain.Default;
 using XMIS.Report.Core.Processor.Condition;
 using XMIS.Report.Core.Processor;
 using XMIS.Report.Core.BLL.Extentions;
-using System.IO;
+using XMIS.Report.Core.DAL.Contract;
+using System.Data.OleDb;
+using System.Data.Common;
+
 
 namespace XMIS.Report.Core.BLL
 {
     public class ReportController
     {
-        private readonly DataConfiguration config = new DataConfiguration();
-        private readonly ExcelAccessManager excelAccessManager = new ExcelAccessManager();
+        private readonly IDataConfiguration config = new DataConfiguration();
+        private readonly IFileManager excelAccessManager = new ExcelManager();
         private readonly IConditionController conditionController = new ConditionController();
-        private readonly IDataAccessManager dataAccessManager;
+        private readonly IDbManager dataAccessManager;
         private readonly List<ServiceDescriptorBase> descriptorCollection;
+        private readonly Dictionary<string, Func<ServiceDescriptorBase, string>> resultDictionary = new Dictionary<string, Func<ServiceDescriptorBase, string>>();
         
         public ReportController()
         {
+            this.InitResultDictionary();
+
+            IUnityContainer container = new UnityContainer()
+                .RegisterType<IDbConnection, OleDbConnection>(new InjectionConstructor())
+                .RegisterType<IDbConnection, SqlConnection>(new InjectionConstructor())
+                .RegisterType<DbManager>();
+
             //config.ReadConfiguration();
 
             //sql conn
-            this.dataAccessManager = new DataAccessManager<SqlConnection>();
-            this.dataAccessManager.Connect(this.config.DBConnectionPath);
+            try
+            { 
+                this.dataAccessManager = container.Resolve<DbManager>();
+                this.dataAccessManager.Connect(this.config.DBConnectionPath);
+            }
+            catch (Exception ex)
+            {
+
+            }
             //
 
             //to do sql helper
@@ -43,31 +64,22 @@ namespace XMIS.Report.Core.BLL
 
         public void WriteDataToXlsFile(string fileName)
         {
-            this.excelAccessManager.OpenXlsFile(this.config.SrcPath + '\\' + fileName);
-            var data = this.excelAccessManager.ReadFormXlsFile();
+            this.excelAccessManager.Open(this.config.SrcPath + '\\' + fileName);
+            var data = this.excelAccessManager.Read();
 
             var commCells = this.GetCells(data);
             for (int i = 0; i < commCells.Count; i++)
             {
                 var val = this.HandleValue(commCells[i].Value);
-                if (val.GetType() == typeof(Dictionary<object, double>))
-                {
-                    //grouped
-                }
-                else
-                {
-                    //cnt
-                    this.excelAccessManager.WriteToXlsFile(commCells[i].RowIdx, commCells[i].ColumnIdx, val.ToString());
-                }
+                this.excelAccessManager.Write(commCells[i].RowIdx, commCells[i].ColumnIdx, val.ToString());
             }
 
             var shortPath = string.Format(@"{0}\{1}", this.config.DstPath, DateTime.Today.ToShortDateString());
             Directory.CreateDirectory(shortPath);
             var savePath = string.Format(@"{0}\{1}", shortPath, fileName);
-            this.excelAccessManager.SaveXlsFileAs(savePath);
+            this.excelAccessManager.SaveAs(savePath);
         }
 
-        //
         private List<CellBase> GetCells(DataTable data)
         {
             var result = new List<CellBase>();
@@ -83,7 +95,7 @@ namespace XMIS.Report.Core.BLL
             return result;
         }
 
-        private dynamic HandleValue(string value)
+        private string HandleValue(string value)
         {
             var result = this.GetDictionary(value);
 
@@ -94,13 +106,13 @@ namespace XMIS.Report.Core.BLL
             object type;
             object from;
             object to;
-            object group;
+            object res;
 
             result.TryGetValue("condition", out condition);
             result.TryGetValue("type", out type);
             result.TryGetValue("from", out from);
             result.TryGetValue("to", out to);
-            result.TryGetValue("group", out group);
+            result.TryGetValue("result", out res);
 
             var func = this.conditionController.GetConditionFunction(
                     (string)condition,
@@ -108,15 +120,48 @@ namespace XMIS.Report.Core.BLL
                     (DateTime)from,
                     (DateTime)to);
 
-            var query = new QueryProcessor(descriptorCollection);
+            IQueryProcessor query = new QueryProcessor(descriptorCollection);
+            var queryRes = query.DoQuery(func);
 
-            if (group != null)
-            {
-                var groupResult = this.conditionController.GetGroupFunction((string)group);
-                return query.DoQuery(func, groupResult);
-            }
-            else
-                return query.DoCountQuery(func);
+            if ((res as string) == "count")
+                return queryRes.Count.ToString();
+
+            //var resComm = "age";
+            //var resAction = "count";
+            //if ((res as string).Contains(':'))
+            //{
+            //    resComm = (res as string).Split(':')[0];
+            //    resAction = (res as string).Split(':')[1];
+            //}
+
+            //Func<ServiceDescriptorBase, string> resultFunc;
+            //this.resultDictionary.TryGetValue(resComm, out resultFunc);
+
+
+            //if (resultFunc == null)
+            //    return string.Empty;
+
+            //string finalResult = string.Empty;
+
+            //switch(resAction)
+            //{
+            //    case "sum":
+            //        int cnt = 0;
+            //        for (int i = 0; i < queryRes.Count; i++)
+            //            cnt += Convert.ToInt32(resultFunc(queryRes[i]));
+            //        finalResult = cnt.ToString();
+            //            break;
+            //    case "count":
+            //            finalResult = queryRes.Count.ToString();
+            //            break;
+            //    case "value":
+            //        for (int i = 0; i < queryRes.Count; i++)
+            //            finalResult += " " + resultFunc(queryRes[i]);
+            //        break;
+            //}
+
+            //return finalResult;
+            return "";
         }
 
         private Dictionary<string, object> GetDictionary(string srcStr)
@@ -132,17 +177,17 @@ namespace XMIS.Report.Core.BLL
             }
             catch (ArgumentNullException ex)
             {
-                // если не находит дату то кидает екс. ИСПРАВИТЬ
                 throw new Exception("Wrong DateTime format", ex);
             }
 
             string condition = src.FindCondition();
             string type = src.FindType();
-            string group = src.FindGroup();
+            string res = src.FindResult();
 
             if (intervalFrom != null 
                 && intervalTo != null
                 && condition != null
+                && res != null
                 && type != null)
             {
                 Dictionary<string, object> result = new Dictionary<string, object>();
@@ -150,7 +195,7 @@ namespace XMIS.Report.Core.BLL
                 result.Add("to", intervalTo);
                 result.Add("condition", condition);
                 result.Add("type", type);
-                result.Add("group", group);
+                result.Add("result", res);
 
                 return result;
             }
@@ -167,6 +212,12 @@ namespace XMIS.Report.Core.BLL
                 descriptorCollection.Add(service.Transform(row));
 
             return descriptorCollection;
+        }
+
+        private void InitResultDictionary()
+        {
+            this.resultDictionary.Add("age", s => s.Patient.Age.ToString());
+            this.resultDictionary.Add("serv_id", s => s.Id.ToString());
         }
 
     }

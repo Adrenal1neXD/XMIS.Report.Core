@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace XMIS.Report.Contract
+namespace XMIS.Report.Core.DAL.Contract
 {
-    public interface IDataAccessManager
+    public interface IDbManager
     {
         void Connect(string directory);
         bool Connected { get; }

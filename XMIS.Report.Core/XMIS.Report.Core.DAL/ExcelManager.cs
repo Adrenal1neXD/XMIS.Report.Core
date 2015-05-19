@@ -1,22 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Office.Interop.Excel;
-using System.Data;
 using System.IO;
+
+using XMIS.Report.Core.DAL.Extentions;
+using XMIS.Report.Core.DAL.Contract;
 
 namespace XMIS.Report.Core.DAL
 {
-    public class ExcelAccessManager
+    public class ExcelManager : IFileManager
     {
         private Application xlApp;
         private Workbook xlWorkBook;
         private Worksheet xlWorkSheet;
         private Dictionary<int, int> yOffset = new Dictionary<int, int>();
 
-        ~ExcelAccessManager()
+        ~ExcelManager()
         {
             var misValue = System.Reflection.Missing.Value;
             this.xlWorkBook.Close(true, misValue, misValue);
@@ -25,7 +25,7 @@ namespace XMIS.Report.Core.DAL
             this.releaseAllObjects();
         }
 
-        public void OpenXlsFile(string fullFilePath)
+        public void Open(string fullFilePath)
         {
             if (this.xlApp != null)
                 this.releaseAllObjects();
@@ -51,7 +51,7 @@ namespace XMIS.Report.Core.DAL
             }
         }
 
-        public System.Data.DataTable ReadFormXlsFile()
+        public System.Data.DataTable Read()
         {
             this.yOffset.Clear();
             if (this.xlWorkSheet == null)
@@ -76,7 +76,6 @@ namespace XMIS.Report.Core.DAL
                     }
                 }
 
-
                 if (trigger)
                 {
                     if (offEnd == rCnt - 1 && rCnt - 1 != 0)
@@ -88,33 +87,16 @@ namespace XMIS.Report.Core.DAL
                     offStart = rCnt;
                 }
                 else
-                    offEnd = rCnt;
-                    
+                    offEnd = rCnt; 
             }
             
             if (offEnd != 0)
                 this.yOffset.Add(offStart, offEnd);
 
-            return this.ToDataTable(items);
+            return items.ToDataTable();
         }
 
-        private System.Data.DataTable ToDataTable(List<string[]> src)
-        {
-            if (src == null)
-                return null;
-
-            var dataTable = new System.Data.DataTable();
-
-            for (int i = 0; i < src[0].Length; i++)
-                dataTable.Columns.Add(new DataColumn());
-
-            foreach(string[] s in src)
-                dataTable.Rows.Add(s);
-
-            return dataTable;
-        }
-
-        public void WriteToXlsFile(int rCnt, int cCnt, string data)
+        public void Write(int rCnt, int cCnt, string data)
         {
             var offs = from y in this.yOffset
                     where y.Key < rCnt
@@ -126,7 +108,7 @@ namespace XMIS.Report.Core.DAL
             this.xlWorkSheet.UsedRange.Cells[rCnt + off + 1, cCnt + 1].Value2 = data;
         }
 
-        public void WriteRowToXlsFile(int rCnt, string[] data)
+        public void Write(int rCnt, string[] data)
         {
             if (this.xlWorkSheet == null)
                 throw new Exception("File is not opened");
@@ -136,7 +118,7 @@ namespace XMIS.Report.Core.DAL
                 this.xlWorkSheet.UsedRange.Value2 = data[cCnt - 1];
         }
 
-        public void SaveXlsFileAs(string fullFilePath)
+        public void SaveAs(string fullFilePath)
         {
             if (this.xlWorkBook != null)
                 if (checkToXlsEnding(fullFilePath))

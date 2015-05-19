@@ -48,10 +48,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\XMIS.Report.Contract\XMIS.Report.Contract.csproj">
-      <Project>{7f65de2a-769a-4436-94e7-273a95de64a5}</Project>
-      <Name>XMIS.Report.Contract</Name>
-    </ProjectReference>
     <ProjectReference Include="..\XMIS.Report.Core.BLL\XMIS.Report.Core.BLL.csproj">
       <Project>{12a58fd3-4205-4986-9353-7a735fec4240}</Project>
       <Name>XMIS.Report.Core.BLL</Name>

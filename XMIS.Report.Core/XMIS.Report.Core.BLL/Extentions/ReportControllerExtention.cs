@@ -10,12 +10,24 @@ namespace XMIS.Report.Core.BLL.Extentions
     {
         public static string FindFromDate(this string src)
         {
-            return FindValue(src, "from_date");
+            var res = FindValue(src, "from_date");
+            return (res == "any" 
+                ? new DateTime().ToShortDateString() 
+                : res == string.Empty 
+                ? new DateTime().ToShortDateString() 
+                : res) 
+                ?? new DateTime().ToShortDateString();
         }
 
         public static string FindToDate(this string src)
         {
-            return FindValue(src, "to_date");
+            var res = FindValue(src, "to_date");
+            return (res == "today" 
+                ? DateTime.Today.ToShortDateString() 
+                : res == string.Empty 
+                ? DateTime.Today.ToShortDateString()
+                : res) 
+                ?? DateTime.Today.ToShortDateString();
         }
 
         public static string FindCondition(this string src)
@@ -28,9 +40,9 @@ namespace XMIS.Report.Core.BLL.Extentions
             return FindValue(src, "type");
         }
 
-        public static string FindGroup(this string src)
+        public static string FindResult(this string src)
         {
-            return FindValue(src, "group");
+            return FindValue(src, "result");
         }
 
         private static string FindValue(string src, string valName)
@@ -42,10 +54,15 @@ namespace XMIS.Report.Core.BLL.Extentions
                 foreach (string substr in tokens)
                 {
                     string[] tmp = substr.Trim().Split('@');
-                    if (tmp != null && tmp.Length == 2)
+                    if (tmp != null)
                     {
-                        if (tmp[0] == valName)
-                            return tmp[1];
+                        if (tmp.Count() > 1)
+                        {
+                            if (tmp[0] == valName)
+                                return tmp[1];
+                        }
+                        else
+                            return null;
                     }
                 }
             }

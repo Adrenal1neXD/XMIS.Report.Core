@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 using XMIS.Report.Domain;
 
-namespace XMIS.Report.Contract
+namespace XMIS.Report.Core.Processor.Contract
 {
-    public interface IServiceDescriptorTransformer
+    public interface IConditionProvider
     {
-        ServiceDescriptorBase Transform(DataRow dataRow);
+        Func<ServiceDescriptorBase, bool> GetFunction(string condition);
     }
 }

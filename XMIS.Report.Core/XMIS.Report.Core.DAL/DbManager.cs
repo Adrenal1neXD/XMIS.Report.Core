@@ -2,14 +2,26 @@
 using System.Data;
 using System.Data.Common;
 
-using XMIS.Report.Contract;
+using XMIS.Report.Core.DAL.Contract;
 
 namespace XMIS.Report.Core.DAL
 {
-    public class DataAccessManager<T> : IDataAccessManager where T : IDbConnection
+    public class DbManager : IDbManager
     {
         private string connectionStringPattern = @"password='';user id='';Data Source='{0}';Integrated Security=True";
-        private T connection;
+        private IDbConnection connection;
+        private Type connType;
+
+        public DbManager(IDbConnection conn)
+        {
+            this.connection = conn;
+            this.connType = conn.GetType();
+        }
+
+        public DbManager()
+        {
+            this.connType = typeof(DbConnection);
+        }
 
         public /*async*/ void Connect(string directory)
         {
@@ -19,7 +31,19 @@ namespace XMIS.Report.Core.DAL
             try
             {
                 var connectionString = string.Format(this.connectionStringPattern, directory);
-                this.connection = (T)Activator.CreateInstance(typeof(T),connectionString);
+
+                if (this.connection == null)
+                    try
+                    {
+                        this.connection = Activator.CreateInstance(this.connType, connectionString) as IDbConnection;
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new Exception("Can't create connection", ex);
+                    }
+                else
+                    this.connection.ConnectionString = connectionString;
+
                 /*await*/ this.connection.Open/*Async*/();
             }
             catch (ArgumentException ex)

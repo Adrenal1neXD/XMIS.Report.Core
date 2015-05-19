@@ -30,6 +30,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Practices.Unity, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Configuration">
+      <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention">
+      <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -44,10 +54,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\XMIS.Report.Contract\XMIS.Report.Contract.csproj">
-      <Project>{7f65de2a-769a-4436-94e7-273a95de64a5}</Project>
-      <Name>XMIS.Report.Contract</Name>
-    </ProjectReference>
     <ProjectReference Include="..\XMIS.Report.Core.DAL\XMIS.Report.Core.DAL.csproj">
       <Project>{e39cccbf-db18-437b-92d2-b4facc0a0d28}</Project>
       <Name>XMIS.Report.Core.DAL</Name>
@@ -68,6 +74,9 @@
       <Project>{2453d1f2-1101-4c79-b289-46882b37980e}</Project>
       <Name>XMIS.Report.Transform</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

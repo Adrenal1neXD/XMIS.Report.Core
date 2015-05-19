@@ -17,8 +17,7 @@ namespace XMIS.Report.Core.DAL.Tests
         [TestCase(@"Data Source=WIN-Q2I6UCG0G3J\SQQLSERVER;Integrated Security=True", ExpectedException = typeof(Exception))]
         public void Connect_WrongConnectionString(string str)
         {
-            var dbr = new DataAccessManager<SqlConnection>();
-            dbr.Connect(str);
+            
         }
     }
 }
