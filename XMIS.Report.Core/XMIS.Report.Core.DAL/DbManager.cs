@@ -31,6 +31,8 @@ namespace XMIS.Report.Core.DAL
             try
             {
                 var connectionString = string.Format(this.connectionStringPattern, directory);
+                if (directory == string.Empty)
+                    throw new Exception("Directory argument of db connection is empty");
 
                 if (this.connection == null)
                     try
@@ -46,20 +48,15 @@ namespace XMIS.Report.Core.DAL
 
                 /*await*/ this.connection.Open/*Async*/();
             }
-            catch (ArgumentException ex)
-            {
-                //wrong args of connection string
-                throw new ArgumentException(ex.Message, ex);
-            }
             catch (DbException ex)
             {
                 //server is off
                 throw new Exception(ex.Message);
             }
-            catch (InvalidOperationException ex)
+            catch (Exception ex)
             {
-                //connection string is null or empty
-                throw new InvalidOperationException(ex.Message, ex);
+                //wrong connection string args
+                throw new Exception(ex.Message, ex);
             }
 
             if (this.connection == null)
@@ -77,7 +74,8 @@ namespace XMIS.Report.Core.DAL
             get 
             { 
                 return this.connection != null 
-                ? this.connection.State == ConnectionState.Open 
+                ? this.connection.State != ConnectionState.Closed
+                || this.connection.State != ConnectionState.Broken
                 : false; 
             }
         }
