@@ -16,22 +16,9 @@ namespace XMIS.Report.Domain
         private int type;
         private int processed = 0;
 
-        /// <summary>
-        /// The patient.
-        /// </summary>
+        private DepartmentBase department;
         private PatientDescriptorBase patient;
-
-        /// <summary>
-        /// The operation.
-        /// </summary>
-        //private ServiceOperationBase operation;
-
-        /// <summary>
-        /// The stay.
-        /// </summary>
         private ServiceStayBase stay;
-        //private ServiceExpensesBase expenses;
-        //private DiagnosisDescriptorBase diagnosis;
 
         public DateTime InDate
         {
@@ -57,29 +44,11 @@ namespace XMIS.Report.Domain
             set { patient = value; }
         }
 
-        //public ServiceOperationBase Operation
-        //{
-        //    get { return operation; }
-        //    set { operation = value; }
-        //}
-
         public ServiceStayBase Stay
         {
             get { return stay; }
             set { stay = value; }
         }
-
-        //public ServiceExpensesBase Expenses
-        //{
-        //    get { return expenses; }
-        //    set { expenses = value; }
-        //}
-
-        //public DiagnosisDescriptorBase Diagnosis
-        //{
-        //    get { return diagnosis; }
-        //    set { diagnosis = value; }
-        //}
 
         public int Days
         {
@@ -103,6 +72,12 @@ namespace XMIS.Report.Domain
         {
             get { return processed; }
             set { processed = value; }
+        }
+
+        public DepartmentBase Department
+        {
+            get { return department; }
+            set { department = value; }
         }
     }
 }

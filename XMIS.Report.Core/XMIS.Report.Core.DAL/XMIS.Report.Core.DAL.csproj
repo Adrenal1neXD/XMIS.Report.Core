@@ -55,13 +55,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdditionalParams.cs" />
+    <Compile Include="Contract\IApp.cs" />
     <Compile Include="Contract\IDataConfiguration.cs" />
-    <Compile Include="Contract\IFileManager.cs" />
+    <Compile Include="Contract\IExcelDataWriter.cs" />
     <Compile Include="DbManager.cs" />
     <Compile Include="DataConfiguration.cs" />
-    <Compile Include="ExcelManager.cs" />
+    <Compile Include="ExcelApp.cs" />
+    <Compile Include="ExcelDataWriter.cs" />
     <Compile Include="Contract\IDbManager.cs" />
+    <Compile Include="CellBorder.cs" />
     <Compile Include="Extentions\ExcelManagerExtention.cs" />
+    <Compile Include="Contract\IExcelApp.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

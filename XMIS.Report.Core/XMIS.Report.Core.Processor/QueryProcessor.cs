@@ -29,11 +29,9 @@ namespace XMIS.Report.Core.Processor
             return this.serviceCollection.Where(func).ToList();
         }
 
-        public double GetCount(Func<ServiceDescriptorBase, bool> func)
+        public int GetCount(Func<ServiceDescriptorBase, bool> func)
         {
-            int queryResult = this.serviceCollection.Where(func).ToList().Count;
-
-            return (double)queryResult;
+            return this.serviceCollection.Where(func).ToList().Count;
         }
     }
 }

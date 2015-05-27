@@ -39,8 +39,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BedBase.cs" />
     <Compile Include="CellBase.cs" />
+    <Compile Include="DepartmentBase.cs" />
     <Compile Include="PatientDescriptorBase.cs" />
+    <Compile Include="RoomBase.cs" />
     <Compile Include="ServiceDescriptorBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceStayBase.cs" />

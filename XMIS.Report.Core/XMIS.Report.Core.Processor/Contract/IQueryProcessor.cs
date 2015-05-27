@@ -18,6 +18,6 @@ namespace XMIS.Report.Core.Processor.Contract
         //Dictionary<object, double> DoQuery(
         //    Func<ServiceDescriptorBase, bool> func, Func<ServiceDescriptorBase, Object> groupFunc, Func<ServiceDescriptorBase, string> resultFunc);
 
-        double GetCount(Func<ServiceDescriptorBase, bool> func);
+        int GetCount(Func<ServiceDescriptorBase, bool> func);
     }
 }

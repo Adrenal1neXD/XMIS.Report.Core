@@ -18,31 +18,28 @@ using XMIS.Report.Core.Processor.Condition;
 using XMIS.Report.Core.Processor;
 using XMIS.Report.Core.BLL.Extentions;
 using XMIS.Report.Core.DAL.Contract;
+using XMIS.Report.Core.BLL.FormFactory;
+using XMIS.Report.Core.BLL.FormFactory.Forms;
 using System.Data.OleDb;
 using System.Data.Common;
 
 
 namespace XMIS.Report.Core.BLL
 {
-    public class ReportController
+    public class ReportController : IReportController
     {
-        private readonly IDataConfiguration config = new DataConfiguration();
-        private readonly IFileManager excelAccessManager = new ExcelManager();
-        private readonly IConditionController conditionController = new ConditionController();
+        private readonly IDataConfiguration config;
         private readonly IDbManager dataAccessManager;
         private readonly List<ServiceDescriptorBase> descriptorCollection;
-        private readonly Dictionary<string, Func<ServiceDescriptorBase, string>> resultDictionary = new Dictionary<string, Func<ServiceDescriptorBase, string>>();
         
-        public ReportController()
+        public ReportController(IDataConfiguration config)
         {
-            this.InitResultDictionary();
+            this.config = config;
 
             IUnityContainer container = new UnityContainer()
                 .RegisterType<IDbConnection, OleDbConnection>(new InjectionConstructor())
                 .RegisterType<IDbConnection, SqlConnection>(new InjectionConstructor())
                 .RegisterType<DbManager>();
-
-            //config.ReadConfiguration();
 
             //sql conn
             try
@@ -62,69 +59,58 @@ namespace XMIS.Report.Core.BLL
             //
         }
 
-        public void WriteDataToXlsFile(string fileName)
+        public void CreateReport(string path, string formName, DateTime fromDate, DateTime toDate)
         {
-            this.excelAccessManager.Open(this.config.SrcPath + '\\' + fileName);
-            var data = this.excelAccessManager.Read();
+            FormFactory.FormFactory factory = this.GetFactory(formName);
+            if (factory == null)
+                return;
+            var x = factory.GetApp(this.descriptorCollection, fromDate, toDate);
 
-            var commCells = this.GetCells(data);
-            for (int i = 0; i < commCells.Count; i++)
-            {
-                var val = this.HandleValue(commCells[i].Value);
-                this.excelAccessManager.Write(commCells[i].RowIdx, commCells[i].ColumnIdx, val.ToString());
-            }
-
-            var shortPath = string.Format(@"{0}\{1}", this.config.DstPath, DateTime.Today.ToShortDateString());
-            Directory.CreateDirectory(shortPath);
-            var savePath = string.Format(@"{0}\{1}", shortPath, fileName);
-            this.excelAccessManager.SaveAs(savePath);
+            x.SaveAs(string.Format(@"{0}\{1}", this.config.DstPath, formName));
         }
 
-        private List<CellBase> GetCells(DataTable data)
+        private FormFactory.FormFactory GetFactory(string formName)
         {
-            var result = new List<CellBase>();
-
-            for (int rowIdx = 0; rowIdx < data.Rows.Count; rowIdx++)
-                for (int colIdx = 0; colIdx < data.Columns.Count; colIdx++)
-                {
-                    string cellValue = data.Rows[rowIdx][colIdx].ToString();
-                    if (cellValue != null && cellValue.Length > 0 && cellValue[0] == '$')
-                        result.Add(new CellBase { Value = cellValue.Trim('$', ' '), RowIdx = rowIdx, ColumnIdx = colIdx });
-                }
-
-            return result;
+            //
+            switch(formName)
+            {
+                case "form 7":
+                    return new Form7x();
+                default:
+                    return null;
+            }
         }
 
         private string HandleValue(string value)
         {
-            var result = this.GetDictionary(value);
+            //var result = this.GetDictionary(value);
 
-            if (result == null)
-                return null;
+            //if (result == null)
+            //    return null;
 
-            object condition;
-            object type;
-            object from;
-            object to;
-            object res;
+            //object condition;
+            //object type;
+            //object from;
+            //object to;
+            //object res;
 
-            result.TryGetValue("condition", out condition);
-            result.TryGetValue("type", out type);
-            result.TryGetValue("from", out from);
-            result.TryGetValue("to", out to);
-            result.TryGetValue("result", out res);
+            //result.TryGetValue("condition", out condition);
+            //result.TryGetValue("type", out type);
+            //result.TryGetValue("from", out from);
+            //result.TryGetValue("to", out to);
+            //result.TryGetValue("result", out res);
 
-            var func = this.conditionController.GetConditionFunction(
-                    (string)condition,
-                    (string)type,
-                    (DateTime)from,
-                    (DateTime)to);
+            //var func = this.conditionController.GetConditionFunction(
+            //        (string)condition,
+            //        (string)type,
+            //        (DateTime)from,
+            //        (DateTime)to);
 
-            IQueryProcessor query = new QueryProcessor(descriptorCollection);
-            var queryRes = query.DoQuery(func);
+            //IQueryProcessor query = new QueryProcessor(descriptorCollection);
+            //var queryRes = query.DoQuery(func);
 
-            if ((res as string) == "count")
-                return queryRes.Count.ToString();
+            //if ((res as string) == "count")
+            //    return queryRes.Count.ToString();
 
             //var resComm = "age";
             //var resAction = "count";
@@ -164,44 +150,44 @@ namespace XMIS.Report.Core.BLL
             return "";
         }
 
-        private Dictionary<string, object> GetDictionary(string srcStr)
-        {
-            var src = srcStr.Trim('$');
-            DateTime intervalFrom;
-            DateTime intervalTo;
+        //private Dictionary<string, object> GetDictionary(string srcStr)
+        //{
+        //    var src = srcStr.Trim('$');
+        //    DateTime intervalFrom;
+        //    DateTime intervalTo;
 
-            try 
-            { 
-                intervalFrom = DateTime.Parse(src.FindFromDate());
-                intervalTo = DateTime.Parse(src.FindToDate());
-            }
-            catch (ArgumentNullException ex)
-            {
-                throw new Exception("Wrong DateTime format", ex);
-            }
+        //    try 
+        //    { 
+        //        intervalFrom = DateTime.Parse(src.FindFromDate());
+        //        intervalTo = DateTime.Parse(src.FindToDate());
+        //    }
+        //    catch (ArgumentNullException ex)
+        //    {
+        //        throw new Exception("Wrong DateTime format", ex);
+        //    }
 
-            string condition = src.FindCondition();
-            string type = src.FindType();
-            string res = src.FindResult();
+        //    string condition = src.FindCondition();
+        //    string type = src.FindType();
+        //    string res = src.FindResult();
 
-            if (intervalFrom != null 
-                && intervalTo != null
-                && condition != null
-                && res != null
-                && type != null)
-            {
-                Dictionary<string, object> result = new Dictionary<string, object>();
-                result.Add("from", intervalFrom);
-                result.Add("to", intervalTo);
-                result.Add("condition", condition);
-                result.Add("type", type);
-                result.Add("result", res);
+        //    if (intervalFrom != null 
+        //        && intervalTo != null
+        //        && condition != null
+        //        && res != null
+        //        && type != null)
+        //    {
+        //        Dictionary<string, object> result = new Dictionary<string, object>();
+        //        result.Add("from", intervalFrom);
+        //        result.Add("to", intervalTo);
+        //        result.Add("condition", condition);
+        //        result.Add("type", type);
+        //        result.Add("result", res);
 
-                return result;
-            }
+        //        return result;
+        //    }
 
-            return null;
-        }
+        //    return null;
+        //}
 
         private List<ServiceDescriptorBase> GetTransformedCollection(DataTable data)
         {
@@ -213,12 +199,5 @@ namespace XMIS.Report.Core.BLL
 
             return descriptorCollection;
         }
-
-        private void InitResultDictionary()
-        {
-            this.resultDictionary.Add("age", s => s.Patient.Age.ToString());
-            this.resultDictionary.Add("serv_id", s => s.Id.ToString());
-        }
-
     }
 }
