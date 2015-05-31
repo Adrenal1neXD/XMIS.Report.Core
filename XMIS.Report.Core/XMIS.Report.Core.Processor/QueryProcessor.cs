@@ -9,29 +9,29 @@ using XMIS.Report.Domain;
 
 namespace XMIS.Report.Core.Processor
 {
-    public class QueryProcessor : IQueryProcessor
+    public class QueryProcessor<T> : IQueryProcessor<T>
     {
-        private IList<ServiceDescriptorBase> serviceCollection = new List<ServiceDescriptorBase>();
+        private IList<T> collection = new List<T>();
 
-        public QueryProcessor(IList<ServiceDescriptorBase> serviceDescriptorCollection)
+        public QueryProcessor(IList<T> descriptorCollection)
         {
-            this.serviceCollection = serviceDescriptorCollection;
+            this.collection = descriptorCollection;
         }
 
-        public IList<ServiceDescriptorBase> ServiceCollection
+        public IList<T> Collection
         {
-            get { return this.serviceCollection; }
-            set { this.serviceCollection = value; }
+            get { return this.collection; }
+            set { this.collection = value; }
         }
 
-        public List<ServiceDescriptorBase> DoQuery(Func<ServiceDescriptorBase, bool> func)
+        public List<T> DoQuery(Func<T, bool> func)
         {
-            return this.serviceCollection.Where(func).ToList();
+            return this.collection.Where(func).ToList();
         }
 
-        public int GetCount(Func<ServiceDescriptorBase, bool> func)
+        public int GetCount(Func<T, bool> func)
         {
-            return this.serviceCollection.Where(func).ToList().Count;
+            return this.collection.Where(func).ToList().Count;
         }
     }
 }

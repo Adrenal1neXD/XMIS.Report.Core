@@ -16,7 +16,6 @@ namespace XMIS.Report.Domain
         private int type;
         private int processed = 0;
 
-        private DepartmentBase department;
         private PatientDescriptorBase patient;
         private ServiceStayBase stay;
 
@@ -72,12 +71,6 @@ namespace XMIS.Report.Domain
         {
             get { return processed; }
             set { processed = value; }
-        }
-
-        public DepartmentBase Department
-        {
-            get { return department; }
-            set { department = value; }
         }
     }
 }

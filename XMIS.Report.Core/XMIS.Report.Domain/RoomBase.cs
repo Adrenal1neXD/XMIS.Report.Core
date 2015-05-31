@@ -10,5 +10,6 @@ namespace XMIS.Report.Domain
     {
         public List<BedBase> Beds { get; set; }
         public int RoomId { get; set; }
+        public int Gender { get; set; }
     }
 }

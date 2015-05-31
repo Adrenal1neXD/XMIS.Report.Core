@@ -18,8 +18,11 @@ namespace XMIS.Report.Core.DAL.Contract
         void AddBorder(CellBorder border = null);
         int RowIdx { get; }
         int ColumnIdx { get; }
+        int MaxRowIdx { get; }
+        int MaxColumnIdx { get; }
         void FormatText(int row, int col, int deg);
         void FormatText(int row, int col, bool bold, bool italic, bool underline);
         void FormatText(int row, int col, XlHAlign halign, XlVAlign valign);
+        void SetValue(int row, int col, string value);
     }
 }

@@ -44,9 +44,16 @@ namespace XMIS.Report.ViewModel
         #region Methods
         private void InitFormList()
         {
+            string[] forms = new string[] 
+            {
+                "form 7",
+                "form 7x",
+                "form 16x"
+            };
+
             this.FormNameCollection = new List<CheckedListItem<string>>();
-            for (int i = 0; i < 100; i++)
-                this.FormNameCollection.Add(new CheckedListItem<string>(string.Format("form {0}", i)));
+            for (int i = 0; i < forms.Length; i++)
+                this.FormNameCollection.Add(new CheckedListItem<string>(forms[i]));
         }
 
         private void SaveClickMethod()

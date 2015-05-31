@@ -4,13 +4,12 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 using XMIS.Report.Domain;
 
 namespace XMIS.Report.Transform.Contract
 {
-    public interface IServiceDescriptorTransformer
+    public interface IDepartmentDescriptorTransformer
     {
-        ServiceDescriptorBase Transform(DataRow dataRow);
+        DepartmentDescriptorBase Transform(DataTable dataTable);
     }
 }

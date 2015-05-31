@@ -55,8 +55,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extentions\ReportControllerExtention.cs" />
-    <Compile Include="FormFactory\FormFactory.cs" />
-    <Compile Include="FormFactory\Forms\Form7x.cs" />
+    <Compile Include="FormFactory\AppFactory.cs" />
+    <Compile Include="FormFactory\MakeParts\DataMaker.cs" />
+    <Compile Include="FormFactory\MakeParts\Form16xParts\Form16x_MakeBorders.cs" />
+    <Compile Include="FormFactory\MakeParts\Form16xParts\Form16x_MakeData.cs" />
+    <Compile Include="FormFactory\MakeParts\Form16xParts\Form16x_MakeFormat.cs" />
+    <Compile Include="FormFactory\MakeParts\Form16xParts\Form16x_MakeText.cs" />
+    <Compile Include="FormFactory\MakeParts\Form7Parts\Form7_MakeBorders.cs" />
+    <Compile Include="FormFactory\MakeParts\Form7Parts\Form7_MakeData.cs" />
+    <Compile Include="FormFactory\MakeParts\Form7Parts\Form7_MakeFormat.cs" />
+    <Compile Include="FormFactory\MakeParts\Form7Parts\Form7_MakeText.cs" />
+    <Compile Include="FormFactory\MakeParts\Form7xParts\Form7x_MakeBorders.cs" />
+    <Compile Include="FormFactory\MakeParts\Form7xParts\Form7x_MakeData.cs" />
+    <Compile Include="FormFactory\MakeParts\Form7xParts\Form7x_MakeFormat.cs" />
+    <Compile Include="FormFactory\MakeParts\Form7xParts\Form7x_MakeText.cs" />
+    <Compile Include="FormFactory\MakeParts\PartMaker.cs" />
     <Compile Include="IReportController.cs" />
     <Compile Include="ReportController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -65,10 +78,6 @@
     <ProjectReference Include="..\XMIS.Report.Core.DAL\XMIS.Report.Core.DAL.csproj">
       <Project>{e39cccbf-db18-437b-92d2-b4facc0a0d28}</Project>
       <Name>XMIS.Report.Core.DAL</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\XMIS.Report.Core.Processor\XMIS.Report.Core.Processor.csproj">
-      <Project>{50196231-2abb-4064-b200-12feb3aa1277}</Project>
-      <Name>XMIS.Report.Core.Processor</Name>
     </ProjectReference>
     <ProjectReference Include="..\XMIS.Report.Domain.Default\XMIS.Report.Domain.Default.csproj">
       <Project>{c15ec840-69ff-4b17-9817-574e7aa830f5}</Project>

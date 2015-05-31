@@ -9,7 +9,6 @@ namespace XMIS.Report.Domain
     public enum BedStatus
     {
         Broken, 
-        Repaired,
         Busy,
         WritenOff,
         Free

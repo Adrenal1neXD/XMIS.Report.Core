@@ -12,7 +12,7 @@ using XMIS.Report.Transform.Extentions;
 
 namespace XMIS.Report.Transform
 {
-    public class ServiceDescriptorTransformer : IServiceDescriptorTransformer
+    public class ServiceDescriptorTransformer : IDescriptorTransformer<ServiceDescriptorBase>
     {
          /// <summary>
         /// The transformer collection organized pipeline. Each transformer implements the interface.

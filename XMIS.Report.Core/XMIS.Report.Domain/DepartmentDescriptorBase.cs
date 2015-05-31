@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace XMIS.Report.Domain
 {
-    public class DepartmentBase
+    public class DepartmentDescriptorBase
     {
         public string DepertmantType { get; set; }
         public string DepartmentName { get; set; }

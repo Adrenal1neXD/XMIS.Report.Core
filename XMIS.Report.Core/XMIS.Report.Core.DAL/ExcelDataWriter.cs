@@ -11,18 +11,25 @@ namespace XMIS.Report.Core.DAL
     public class ExcelDataWriter : IExcelDataWriter
     {
         private Range cells;
-        private int rowIdx = 1;
-        private int colIdx = 0;
+        private int rowIdx;
+        private int colIdx;
+        private int maxCol;
+        private int maxRow;
 
         public ExcelDataWriter(Range cells)
         {
             this.cells = cells;
+            this.colIdx = 0;
+            this.rowIdx = 1;
+            this.maxRow = this.rowIdx;
+            this.maxCol = this.colIdx;
         }
 
         public void NextRow()
         {
             this.rowIdx++;
             this.colIdx = 0;
+            this.MaxRowIdx = this.rowIdx;
         }
 
         public void CreateCell(string value = "", int hcolspan = 1, int vcolspan = 1)
@@ -34,13 +41,14 @@ namespace XMIS.Report.Core.DAL
                 cells.Range[cells[colIdx][rowIdx], cells[colIdx + hcolspan - 1][rowIdx + vcolspan - 1]].Merge();
                 this.colIdx += hcolspan - 1;
             }
+
+            this.MaxColumnIdx = this.colIdx;
         }
 
         public void MoveRight(int times)
         {
-            //for (int i = 0; i < times; i++)
-            //    this.CreateCell();
             this.colIdx += times;
+            this.MaxColumnIdx = this.colIdx;
         }
 
         public void AddBorder(int row, int column, CellBorder border = null)
@@ -101,6 +109,18 @@ namespace XMIS.Report.Core.DAL
             }
         }
 
+        public int MaxColumnIdx
+        {
+            get { return this.maxCol; }
+            private set { this.maxCol = (this.MaxColumnIdx < value) ? value : this.MaxColumnIdx; }
+        }
+
+        public int MaxRowIdx
+        {
+            get { return this.maxRow; }
+            private set { this.maxRow = (this.MaxRowIdx < value) ? value : this.MaxRowIdx; }
+        }
+
         public void FormatText(int row, int col, int deg)
         {
             ((Range)cells[col][row]).Orientation = deg;
@@ -117,6 +137,11 @@ namespace XMIS.Report.Core.DAL
         {
             ((Range)cells[col][row]).HorizontalAlignment = halign;
             ((Range)cells[col][row]).VerticalAlignment = valign;
+        }
+
+        public void SetValue(int row, int col, string value)
+        {
+            ((Range)cells[col][row]).Value2 = value;
         }
 
     }

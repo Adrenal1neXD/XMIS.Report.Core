@@ -41,7 +41,8 @@
   <ItemGroup>
     <Compile Include="BedBase.cs" />
     <Compile Include="CellBase.cs" />
-    <Compile Include="DepartmentBase.cs" />
+    <Compile Include="DepartmentDescriptorBase.cs" />
+    <Compile Include="Extentions\RoomExtention.cs" />
     <Compile Include="PatientDescriptorBase.cs" />
     <Compile Include="RoomBase.cs" />
     <Compile Include="ServiceDescriptorBase.cs" />

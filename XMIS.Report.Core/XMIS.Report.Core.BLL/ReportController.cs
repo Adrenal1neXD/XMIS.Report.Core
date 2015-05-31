@@ -11,15 +11,12 @@ using Microsoft.Practices.Unity;
 
 using XMIS.Report.Core.DAL;
 using XMIS.Report.Transform;
-using XMIS.Report.Core.Processor.Contract;
 using XMIS.Report.Domain;
 using XMIS.Report.Domain.Default;
-using XMIS.Report.Core.Processor.Condition;
-using XMIS.Report.Core.Processor;
 using XMIS.Report.Core.BLL.Extentions;
 using XMIS.Report.Core.DAL.Contract;
 using XMIS.Report.Core.BLL.FormFactory;
-using XMIS.Report.Core.BLL.FormFactory.Forms;
+using XMIS.Report.Core.BLL.FormFactory.MakeParts.Parts;
 using System.Data.OleDb;
 using System.Data.Common;
 
@@ -30,7 +27,7 @@ namespace XMIS.Report.Core.BLL
     {
         private readonly IDataConfiguration config;
         private readonly IDbManager dataAccessManager;
-        private readonly List<ServiceDescriptorBase> descriptorCollection;
+        private readonly List<DepartmentDescriptorBase> descriptorCollection;
         
         public ReportController(IDataConfiguration config)
         {
@@ -54,14 +51,14 @@ namespace XMIS.Report.Core.BLL
             //
 
             //to do sql helper
-            var dbdata = this.dataAccessManager.DoQuery("Select * from [XMISDB].[dbo].[Person]");
+            var dbdata = this.dataAccessManager.DoQuery("Select * from MyPerson");
             this.descriptorCollection = this.GetTransformedCollection(dbdata);
             //
         }
 
         public void CreateReport(string path, string formName, DateTime fromDate, DateTime toDate)
         {
-            FormFactory.FormFactory factory = this.GetFactory(formName);
+            var factory = this.GetFactory(formName);
             if (factory == null)
                 return;
             var x = factory.GetApp(this.descriptorCollection, fromDate, toDate);
@@ -69,134 +66,32 @@ namespace XMIS.Report.Core.BLL
             x.SaveAs(string.Format(@"{0}\{1}", this.config.DstPath, formName));
         }
 
-        private FormFactory.FormFactory GetFactory(string formName)
+        private dynamic GetFactory(string formName)
         {
             //
             switch(formName)
             {
                 case "form 7":
-                    return new Form7x();
+                    return new AppFactory<Form7_MakeText, Form7_MakeData, Form7_MakeBorders, Form7_MakeFormat>(18);
+                case "form 7x":
+                    return new AppFactory<Form7x_MakeText, Form7x_MakeData, Form7x_MakeBorders, Form7x_MakeFormat>(29);
+                case "form 16x":
+                    return new AppFactory<Form16x_MakeText, Form16x_MakeData, Form16x_MakeBorders, Form16x_MakeFormat>(23);
                 default:
                     return null;
             }
         }
 
-        private string HandleValue(string value)
+        private List<DepartmentDescriptorBase> GetTransformedCollection(DataTable data)
         {
-            //var result = this.GetDictionary(value);
+            
+            List<DepartmentDescriptorBase> descriptorCollection = new List<DepartmentDescriptorBase>();
 
-            //if (result == null)
-            //    return null;
+            int[] depatmentIdxs = new int[] { 4, 5, 77 };
 
-            //object condition;
-            //object type;
-            //object from;
-            //object to;
-            //object res;
-
-            //result.TryGetValue("condition", out condition);
-            //result.TryGetValue("type", out type);
-            //result.TryGetValue("from", out from);
-            //result.TryGetValue("to", out to);
-            //result.TryGetValue("result", out res);
-
-            //var func = this.conditionController.GetConditionFunction(
-            //        (string)condition,
-            //        (string)type,
-            //        (DateTime)from,
-            //        (DateTime)to);
-
-            //IQueryProcessor query = new QueryProcessor(descriptorCollection);
-            //var queryRes = query.DoQuery(func);
-
-            //if ((res as string) == "count")
-            //    return queryRes.Count.ToString();
-
-            //var resComm = "age";
-            //var resAction = "count";
-            //if ((res as string).Contains(':'))
-            //{
-            //    resComm = (res as string).Split(':')[0];
-            //    resAction = (res as string).Split(':')[1];
-            //}
-
-            //Func<ServiceDescriptorBase, string> resultFunc;
-            //this.resultDictionary.TryGetValue(resComm, out resultFunc);
-
-
-            //if (resultFunc == null)
-            //    return string.Empty;
-
-            //string finalResult = string.Empty;
-
-            //switch(resAction)
-            //{
-            //    case "sum":
-            //        int cnt = 0;
-            //        for (int i = 0; i < queryRes.Count; i++)
-            //            cnt += Convert.ToInt32(resultFunc(queryRes[i]));
-            //        finalResult = cnt.ToString();
-            //            break;
-            //    case "count":
-            //            finalResult = queryRes.Count.ToString();
-            //            break;
-            //    case "value":
-            //        for (int i = 0; i < queryRes.Count; i++)
-            //            finalResult += " " + resultFunc(queryRes[i]);
-            //        break;
-            //}
-
-            //return finalResult;
-            return "";
-        }
-
-        //private Dictionary<string, object> GetDictionary(string srcStr)
-        //{
-        //    var src = srcStr.Trim('$');
-        //    DateTime intervalFrom;
-        //    DateTime intervalTo;
-
-        //    try 
-        //    { 
-        //        intervalFrom = DateTime.Parse(src.FindFromDate());
-        //        intervalTo = DateTime.Parse(src.FindToDate());
-        //    }
-        //    catch (ArgumentNullException ex)
-        //    {
-        //        throw new Exception("Wrong DateTime format", ex);
-        //    }
-
-        //    string condition = src.FindCondition();
-        //    string type = src.FindType();
-        //    string res = src.FindResult();
-
-        //    if (intervalFrom != null 
-        //        && intervalTo != null
-        //        && condition != null
-        //        && res != null
-        //        && type != null)
-        //    {
-        //        Dictionary<string, object> result = new Dictionary<string, object>();
-        //        result.Add("from", intervalFrom);
-        //        result.Add("to", intervalTo);
-        //        result.Add("condition", condition);
-        //        result.Add("type", type);
-        //        result.Add("result", res);
-
-        //        return result;
-        //    }
-
-        //    return null;
-        //}
-
-        private List<ServiceDescriptorBase> GetTransformedCollection(DataTable data)
-        {
-            var service = new ServiceDescriptorTransformer();
-            List<ServiceDescriptorBase> descriptorCollection = new List<ServiceDescriptorBase>();
-
-            foreach (DataRow row in data.AsEnumerable())
-                descriptorCollection.Add(service.Transform(row));
-
+            foreach (int idx in depatmentIdxs)
+                descriptorCollection.Add(new DepartmentDescriptorTransform(idx).Transform(data));
+            
             return descriptorCollection;
         }
     }

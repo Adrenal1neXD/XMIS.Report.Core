@@ -74,8 +74,10 @@ namespace XMIS.Report.Core.DAL
             get 
             { 
                 return this.connection != null 
-                ? this.connection.State != ConnectionState.Closed
-                || this.connection.State != ConnectionState.Broken
+                ? this.connection.State == ConnectionState.Open
+                || this.connection.State == ConnectionState.Fetching
+                || this.connection.State == ConnectionState.Executing
+                || this.connection.State == ConnectionState.Connecting
                 : false; 
             }
         }
