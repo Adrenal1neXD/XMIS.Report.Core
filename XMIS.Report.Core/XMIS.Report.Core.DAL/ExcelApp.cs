@@ -60,8 +60,13 @@ namespace XMIS.Report.Core.DAL
 
         public void SaveAs(string path)
         {
+            if (path == string.Empty)
+                return;
             if (this.validValues() && this.validPath(path))
-                this.WorkBook.SaveAs(this.checkToXlsEnding(path));
+                if (!path.Contains('\\'))
+                    this.WorkBook.SaveAs(this.checkToXlsEnding(Directory.GetCurrentDirectory() + @"\" + path));
+                else
+                    this.WorkBook.SaveAs(this.checkToXlsEnding(path));
         }
 
         ~ExcelApp()
@@ -121,17 +126,15 @@ namespace XMIS.Report.Core.DAL
             if (path == string.Empty)
                 result = false;
 
-            if (!path.Contains('\\'))
-                result = false;
-            else
-            {
-                var supPath = path.Split('\\');
-                var dir = "";
-                for (int i = 0; i < supPath.Length - 1; i++)
-                    dir += supPath[i] + '\\';
-                dir = dir.Remove(dir.Length - 1);
-                result = Directory.Exists(dir);
-            }
+            var supPath = path.Split('\\');
+            if (supPath.Length < 2)
+                return true;
+            var dir = "";
+            for (int i = 0; i < supPath.Length - 1; i++)
+                dir += supPath[i] + '\\';
+            dir = dir.Remove(dir.Length - 1);
+            result = Directory.Exists(dir);
+
             return result;
         }
 

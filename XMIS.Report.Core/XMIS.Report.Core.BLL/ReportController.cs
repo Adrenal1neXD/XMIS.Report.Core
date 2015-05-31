@@ -68,7 +68,6 @@ namespace XMIS.Report.Core.BLL
 
         private dynamic GetFactory(string formName)
         {
-            //
             switch(formName)
             {
                 case "form 7":

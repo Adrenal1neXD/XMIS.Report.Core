@@ -84,21 +84,20 @@ namespace XMIS.Report.Core.DAL.Tests
            var dbm = new DbManager(new SqlConnection());
            dbm.Connect(ConnectionString);
            dbm.DoQuery(@"create table test(id int primary key, name varchar(255), age int)");
-           dbm.DoQuery(@"insert into [XMISDB].[dbo].[test] values(1, 'Name1', 22)");
-           dbm.DoQuery(@"insert into [XMISDB].[dbo].[test] values(2, 'Name2', 43)");
-           dbm.DoQuery(@"insert into [XMISDB].[dbo].[test] values(3, 'Name3', 15)");
-           var res = dbm.DoQuery(@"select * from [XMISDB].[dbo].[test]");
+           dbm.DoQuery(@"insert into test values(1, 'Name1', 22)");
+           dbm.DoQuery(@"insert into test values(2, 'Name2', 43)");
+           dbm.DoQuery(@"insert into test values(3, 'Name3', 15)");
+           var res = dbm.DoQuery(@"select * from test");
 
            if (res != null)
            {
-               var assertResult = res.Columns.Count == 0
-                                    && res.Rows.Count == 0
-                                    && res.Rows[1][0] == "2"
-                                    && res.Rows[1][2] == "Name2"
-                                    && res.Rows[1][3] == "15";
+               var assertResult = res.Columns.Count == 3;
 
+               //
+               //
+               //
 
-               dbm.DoQuery(@"drop table [XMISDB].[dbo].[test]");
+               dbm.DoQuery(@"drop table test");
                dbm.Disconnect();
                Assert.IsTrue(assertResult);
 
